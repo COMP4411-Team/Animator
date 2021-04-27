@@ -9,6 +9,9 @@
 #include <cstdio>
 
 
+class Mesh;
+struct aiFace;
+
 enum DrawModeSetting_t 
 { NONE=0, NORMAL, WIREFRAME, FLATSHADE, };
 
@@ -91,5 +94,31 @@ void drawCylinder( double h, double r1, double r2 );
 void drawTriangle( double x1, double y1, double z1,
 			       double x2, double y2, double z2,
 			       double x3, double y3, double z3 );
+
+// ****************************************************************************
+// Functions added for b&w
+// ****************************************************************************
+
+void drawSlice( double x1, double y1, double z1,
+				double x2, double y2, double z2,
+				double x3, double y3, double z3,
+				double x4, double y4, double z4);
+
+void drawTriangle( Mesh& mesh, const aiFace& face );
+
+void drawNurbs(float* control_points, int width, int height);
+
+// Draw a Torus with ring radius r and tube radius t
+void drawTorus(double rl, double tl,double rs, double ts ,double x, double y, double z, double rx, double ry, double rz, int flower, int numPetal);
+
+//Draw the Bzier curve for rotation
+void drawCurve(double x1, double y1, double z1,
+	double x2, double y2, double z2,
+	double x3, double y3, double z3,
+	double x4, double y4, double z4);
+void drawRotation(double x1, double y1, double z1,
+	double x2, double y2, double z2,
+	double x3, double y3, double z3,
+	double x4, double y4, double z4);
 
 #endif
