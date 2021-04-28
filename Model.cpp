@@ -447,9 +447,9 @@ void SampleModel::draw()
 		setAmbientColor(0.75f, 0.75f, 0.75f);
 		setDiffuseColor(0.75f, 0.75f, 0.75f);
 		glScaled(0.5, 0.5, 0.5);
-		glRotated(-90, 1, 0, 0);
-		glRotated(180, 0, 0, 1);
-		glTranslated(0, 0, -5);
+		glRotated(105, 1, 0, 0);
+		glRotated(-45, 0, 0, 1);
+		glTranslated(0, 0, 5);
 
 		// Initialization
 		auto& mesh = helper.meshes[helper.active_index];
@@ -495,16 +495,16 @@ void SampleModel::draw()
 			solver.applyRotation(mesh);
 
 		// Apply controls to bones and render them
-		glPushMatrix();
-		glRotated(-90, 1, 0, 0);
-		glRotated(-90, 0, 0, 1);
-		renderBones(mesh, scene->mRootNode);
-		glPopMatrix();
+		//glPushMatrix();
+		//glRotated(-90, 1, 0, 0);
+		//glRotated(-90, 0, 0, 1);
+		//renderBones(mesh, scene->mRootNode);
+		//glPopMatrix();
 
 
 		// Avoid overlapping bones and meshes
-		glTranslated(0, 5, 0);
-		glRotated(180, 1, 0, 0);
+		//glTranslated(0, 5, 0);
+		//glRotated(180, 1, 0, 0);
 
 		// Apply the solution of IKSolver
 		if (solver.show_ik_result)

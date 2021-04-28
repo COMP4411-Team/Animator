@@ -54,7 +54,7 @@ public:
 
 	//---[ Ordering Methods ]------------------------------
 
-	Mat3<T> transpose() const { return Mat3<T>(n[0],n[3],n[6],n[1],n[4],n[7],n[2],n[5],n[8]) }
+	Mat3<T> transpose() const { return Mat3<T>(n[0],n[3],n[6],n[1],n[4],n[7],n[2],n[5],n[8]); }
 	double trace() const { return n[0]+n[4]+n[8]; }
 	
 	//---[ GL Matrix ]-------------------------------------
@@ -255,6 +255,7 @@ public:
 	template <class U> friend Mat4<U> operator /( const Mat4<U>& a, const double d );
 	template <class U> friend bool operator ==( const Mat4<U>& a, const Mat4<U>& b );
 	template <class U> friend bool operator !=( const Mat4<U>& a, const Mat4<U>& b );
+	template <class U> friend Vec4<U> operator *(const Mat4<U>& a, const Vec4<U>& v);
 
 #else // _MSC_VER >= 1300
 
@@ -318,14 +319,14 @@ template <class T>
 inline Mat3<T> operator +( const Mat3<T>& a, const Mat3<T>& b ) {
 	return Mat3<T>( a.n[0]+b.n[0], a.n[1]+b.n[1], a.n[2]+b.n[2],
 					a.n[3]+b.n[3], a.n[4]+b.n[4], a.n[5]+b.n[5],
-					a.n[6]+b.n[6], a.n[7]+b.n[7], a.n[8]+b.n[8],);
+					a.n[6]+b.n[6], a.n[7]+b.n[7], a.n[8]+b.n[8]);
 }
 
 template <class T>
 inline Mat3<T> operator -( const Mat3<T>& a, const Mat3<T>& b) {
 	return Mat3<T>( a.n[0]-b.n[0], a.n[1]-b.n[1], a.n[2]-b.n[2],
 					a.n[3]-b.n[3], a.n[4]-b.n[4], a.n[5]-b.n[5],
-					a.n[6]-b.n[6], a.n[7]-b.n[7], a.n[8]-b.n[8],);
+					a.n[6]-b.n[6], a.n[7]-b.n[7], a.n[8]-b.n[8]);
 }
 
 template <class T>
