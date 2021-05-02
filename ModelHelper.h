@@ -30,6 +30,7 @@ public:
 	aiMatrix4x4t<float> final_transformation;	// final matrix applied to vertices
 	aiMatrix4x4t<float> local_transformation;	// all the user specified transformations
 	aiMatrix4x4t<float> offset;					// transform vertex from local to bone space
+	aiMatrix4x4t<float> modelViewMatrix;			// model view matrix for transforming to the end of the bone
 
 	// Info for rendering the bone and IK
 	float length;

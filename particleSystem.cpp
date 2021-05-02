@@ -9,6 +9,9 @@
 #include <math.h>
 #include <limits.h>
 
+#include "modelerdraw.h"
+#include "particle.h"
+#include <assimp/vector3.inl>
 
 /***************
  * Constructors
@@ -17,7 +20,7 @@
 ParticleSystem::ParticleSystem() 
 {
 	// TODO
-
+	bake_fps = 30.f;
 }
 
 
@@ -44,6 +47,10 @@ void ParticleSystem::startSimulation(float t)
 {
     
 	// TODO
+	prevT = t;
+	bake_start_time = t;
+	clearBaked();
+	particles.clear();
 
 	// These values are used by the UI ...
 	// -ve bake_end_time indicates that simulation
@@ -62,6 +69,7 @@ void ParticleSystem::stopSimulation(float t)
 {
     
 	// TODO
+	bake_end_time = t;
 
 	// These values are used by the UI
 	simulate = false;
@@ -74,6 +82,8 @@ void ParticleSystem::resetSimulation(float t)
 {
     
 	// TODO
+	clearBaked();
+	particles.clear();
 
 	// These values are used by the UI
 	simulate = false;
@@ -86,6 +96,37 @@ void ParticleSystem::computeForcesAndUpdateParticles(float t)
 {
 
 	// TODO
+	if (!simulate)
+		return;
+	
+	while (!particles.empty() && particles.front().life > lifespan)
+	{
+		particles.pop_front();
+	}
+	
+	if (particles.size() < maxNumParticle)
+	{
+		for (ParticleEmitter& emitter : emitters)
+		{
+			vector<Particle> newParticles;
+			emitter.emit(t, newParticles);
+			particles.insert(particles.end(), std::make_move_iterator(newParticles.begin()),
+				std::make_move_iterator(newParticles.end()));
+		}
+	}
+
+	aiVector3D accel = (10.0f * emitters[0].initDir + gravity) / mass;
+	float deltaT = t - prevT;
+	for (Particle& particle : particles)
+	{
+		particle.life += deltaT;
+		particle.vel += accel * deltaT;
+		particle.pos += particle.vel * deltaT;
+	}
+
+	bakeParticles(t);
+
+	prevT = t;
 }
 
 
@@ -94,6 +135,23 @@ void ParticleSystem::drawParticles(float t)
 {
 
 	// TODO
+	// Still simulating
+	if (bake_end_time < 0)
+	{
+		for (Particle& particle : particles)
+			drawSphere(renderingRadius, particle.pos);
+		return;
+	}
+
+	// Use the cache
+	int index = static_cast<int>((t - bake_start_time) * bake_fps);
+	if (index < 0)
+		return;
+	if (index < cache.size())
+	{
+		for (Particle& particle : cache[index])
+			drawSphere(renderingRadius, particle.pos);
+	}
 }
 
 
@@ -106,6 +164,11 @@ void ParticleSystem::bakeParticles(float t)
 {
 
 	// TODO
+	int index = static_cast<int>((t - bake_start_time) * bake_fps);
+	index = max(0, index);
+	if (index + 1 > cache.size())
+		cache.resize((cache.size() + 1) * 2);
+	cache[index] = particles;
 }
 
 /** Clears out your data structure of baked particles */
@@ -113,6 +176,7 @@ void ParticleSystem::clearBaked()
 {
 
 	// TODO
+	cache.clear();
 }
 
 

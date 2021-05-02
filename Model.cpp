@@ -101,6 +101,14 @@ aiMatrix4x4t<float> array2Mat(float* a)
 	return mat;
 }
 
+// Get the current model view matrix
+aiMatrix4x4t<float> getModelViewMatrix()
+{
+    GLfloat m[16];
+    glGetFloatv(GL_MODELVIEW_MATRIX, m);
+	return array2Mat(m);
+}
+
 // Animation
 void animate()
 {
@@ -269,8 +277,15 @@ void renderBones(Mesh& mesh, const aiNode* cur)
 
 		// Apply user controls, after change of coordinates
 		applyAiMatrix(inverse_permutation * bone.local_transformation * permutation);
-		
-		drawCylinder(bone.length, 0.3, 0.01);	// cylinder for now
+
+		// In the animator project, don't render the bone
+		// drawCylinder(bone.length, 0.3, 0.01);	// cylinder for now
+
+		// This is for recording the transformation of the end of the bone for particle emitter
+		glPushMatrix();
+		glTranslatef(0, 0, bone.length);
+		bone.modelViewMatrix = getModelViewMatrix();
+		glPopMatrix();
 	}
 
 	for (int i = 0; i < cur->mNumChildren; ++i)
@@ -495,11 +510,19 @@ void SampleModel::draw()
 			solver.applyRotation(mesh);
 
 		// Apply controls to bones and render them
-		//glPushMatrix();
-		//glRotated(-90, 1, 0, 0);
-		//glRotated(-90, 0, 0, 1);
-		//renderBones(mesh, scene->mRootNode);
-		//glPopMatrix();
+		glPushMatrix();
+
+		glLoadIdentity();
+		glScaled(0.5, 0.5, 0.5);
+		glRotated(105, 1, 0, 0);
+		glRotated(-45, 0, 0, 1);
+		glTranslated(0, 0, 5);
+		
+		glRotated(90, 1, 0, 0);
+		glRotated(-90, 0, 0, 1);
+		glTranslated(6.3, -3.3, 0);
+		renderBones(mesh, scene->mRootNode);		// to record the transformation for particle emitter
+		glPopMatrix();
 
 
 		// Avoid overlapping bones and meshes
@@ -573,6 +596,22 @@ int main()
 	Mesh& mesh = helper.meshes[helper.active_index];
 	solver.scene = scene;
 	solver.mesh = &mesh;
+
+	// Set the particle system
+	ParticleSystem* particle = new ParticleSystem();
+	ParticleEmitter emitter;
+	auto& emitters = particle->getEmitters();
+	
+	emitter.registerBone(&helper.meshes[0].getBone("foreLimpLeft3"));
+	emitters.push_back(emitter);
+	emitter.registerBone(&helper.meshes[0].getBone("rearLimpLeft3"));
+	emitters.push_back(emitter);
+	emitter.registerBone(&helper.meshes[0].getBone("foreLimpRight3"));
+	emitters.push_back(emitter);
+	emitter.registerBone(&helper.meshes[0].getBone("rearLimpRight3"));
+	emitters.push_back(emitter);
+	
+	ModelerApplication::Instance()->SetParticleSystem(particle);
 	
 	// Initialize the controls
 	// Constructor is ModelerControl(name, minimumvalue, maximumvalue, 

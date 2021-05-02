@@ -16,9 +16,13 @@
 #ifndef __PARTICLE_SYSTEM_H__
 #define __PARTICLE_SYSTEM_H__
 
+#include <deque>
+#include <unordered_map>
+#include <vector>
+
+#include "ParticleEmitter.h"
 #include "vec.h"
-
-
+#include "particle.h"
 
 class ParticleSystem {
 
@@ -60,7 +64,9 @@ public:
 
 	// This function should clear out your data structure
 	// of baked particles (without leaking memory).
-	virtual void clearBaked();	
+	virtual void clearBaked();
+
+	virtual std::vector<ParticleEmitter>& getEmitters() { return emitters; }
 
 
 
@@ -76,7 +82,9 @@ public:
 
 protected:
 	
+	std::vector<ParticleEmitter> emitters;
 
+	std::deque<Particle> particles;
 
 	/** Some baking-related state **/
 	float bake_fps;						// frame rate at which simulation was baked
@@ -84,11 +92,20 @@ protected:
 										// These 2 variables are used by the UI for
 										// updating the grey indicator 
 	float bake_end_time;				// time at which baking ended
+	std::vector<std::deque<Particle>> cache;
 
 	/** General state variables **/
 	bool simulate;						// flag for simulation mode
 	bool dirty;							// flag for updating ui (don't worry about this)
 
+	aiVector3D gravity{0.0f, -9.81f, 0.0f};
+
+	float prevT;
+	int maxNumParticle{3000};
+	float mass{1.0f};
+	float lifespan{1.5f};
+	float renderingRadius{0.01f};
+	float drag{0.3};
 };
 
 

@@ -726,3 +726,11 @@ void drawSlice(double x1, double y1, double z1,
     drawTriangle(x1, y1, z1, x2, y2, z2, x3, y3, z3);
     drawTriangle(x2, y2, z2, x3, y3, z3, x4, y4, z4);
 }
+
+void drawSphere(float radius, const aiVector3D& position)
+{
+	glPushMatrix();
+	glTranslatef(position.x, position.y, position.z);
+	drawSphere(radius);
+	glPopMatrix();
+}

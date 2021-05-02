@@ -206,6 +206,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="ModelHelper.cpp" />
+    <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="robotarm.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -284,6 +285,7 @@
     <ClInclude Include="bitmap.h" />
     <ClInclude Include="ModelHelper.h" />
     <ClInclude Include="particle.h" />
+    <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="particleSystem.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="pointObj.h" />

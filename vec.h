@@ -16,6 +16,8 @@ using namespace std;
 #endif // _MSC_VER >= 1300
 
 #include <cmath>
+#include <assimp/vector2.h>
+#include <assimp/vector3.inl>
 
 #pragma warning(push)
 #pragma warning(disable : 4244)
@@ -882,6 +884,48 @@ template <class T>
 inline Vec4<T> prod(const Vec4<T>& a, const Vec4<T>& b ) {
 	return Vec4<T>( a.n[0]*b.n[0], a.n[1]*b.n[1], a.n[2]*b.n[2], a.n[3]*b.n[3] );
 }
+
+inline double getRandomReal()
+{
+	return (double) rand() / RAND_MAX;
+}
+
+inline double getRandomReal(double min, double max)
+{
+	return getRandomReal() * (max - min) + min;
+}
+
+inline aiVector3D localToWorld(const aiVector3D& v, const aiVector3D& n)
+{
+	aiVector3D a;
+	if (abs(n.x) > 0.9)
+		a = aiVector3D(0.0, 1.0, 0.0);
+	else
+		a = aiVector3D(1.0, 0.0, 0.0);
+	aiVector3D t((n^a).Normalize());
+	aiVector3D b(n^t);
+	return v.x * t + v.y * b + v.z * n;
+}
+
+inline aiVector2D concentricSampleDisk()
+{
+	double x = 2.0 * getRandomReal() - 1.0, y = 2.0 * getRandomReal() - 1.0;
+	if (x == 0.0 && y == 0.0)
+		return aiVector2D();
+	double theta, r;
+	if (abs(x) > abs(y))
+	{
+		r = x;
+		theta = AI_MATH_PI_F * 0.25 * (y / x);
+	}
+	else
+	{
+		r = y;
+		theta = AI_MATH_HALF_PI_F - AI_MATH_PI_F * 0.25 * (x / y);
+	}
+	return aiVector2D(r * cos(theta), r * sin(theta));
+}
+
 
 #pragma warning(pop)
 

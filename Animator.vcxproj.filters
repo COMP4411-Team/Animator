@@ -117,6 +117,9 @@
     <ClCompile Include="BezierCurveEvaluator.cpp">
       <Filter>Source Files\Curves</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleEmitter.cpp">
+      <Filter>Source Files\Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="curve.h">
@@ -196,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="BezierCurveEvaluator.h">
       <Filter>Header Files\Curves.</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleEmitter.h">
+      <Filter>Header Files\Particles.</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
