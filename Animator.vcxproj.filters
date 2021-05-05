@@ -119,6 +119,8 @@
     </ClCompile>
     <ClCompile Include="ParticleEmitter.cpp">
       <Filter>Source Files\Particles</Filter>
+    <ClCompile Include="BSplineCurveEvaluator.cpp">
+      <Filter>Source Files\Curves</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +204,8 @@
     </ClInclude>
     <ClInclude Include="ParticleEmitter.h">
       <Filter>Header Files\Particles.</Filter>
+    <ClInclude Include="BSplineCurveEvaluator.h">
+      <Filter>Header Files\Curves.</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
