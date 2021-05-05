@@ -38,7 +38,7 @@
 
 * [ ] 2B Add flocking behaviors to your particles to simulate creatures moving in flocks, herds, or schools. For up to one more bell, make realistic creature model and have it move realistically according to its motion path.
   
-* [ ] 2B Implement a C2-Interpolating curve.
+* [x] 2B Implement a C2-Interpolating curve.
   
 * [ ] 2B Add the ability to edit Catmull-Rom curves.
   

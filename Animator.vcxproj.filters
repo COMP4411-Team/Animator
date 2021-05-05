@@ -120,6 +120,9 @@
     <ClCompile Include="ParticleEmitter.cpp">
       <Filter>Source Files\Particles</Filter>
     </ClCompile>
+    <ClCompile Include="C2InterpolatingCurve.cpp">
+      <Filter>Source Files\Curves</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="curve.h">
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="ParticleEmitter.h">
       <Filter>Header Files\Particles.</Filter>
+    </ClInclude>
+    <ClInclude Include="C2InterpolatingCurve.h">
+      <Filter>Header Files\Curves.</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
