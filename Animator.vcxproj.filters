@@ -122,6 +122,9 @@
     <ClCompile Include="BSplineCurveEvaluator.cpp">
       <Filter>Source Files\Curves</Filter>
     </ClCompile>
+    <ClCompile Include="C2InterpolatingCurve.cpp">
+      <Filter>Source Files\Curves</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="curve.h">
@@ -205,6 +208,9 @@
     <ClInclude Include="ParticleEmitter.h">
       <Filter>Header Files\Particles.</Filter>
     <ClInclude Include="BSplineCurveEvaluator.h">
+      <Filter>Header Files\Curves.</Filter>
+    </ClInclude>
+    <ClInclude Include="C2InterpolatingCurve.h">
       <Filter>Header Files\Curves.</Filter>
     </ClInclude>
   </ItemGroup>
