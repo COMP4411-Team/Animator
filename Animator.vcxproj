@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="BezierCurveEvaluator.cpp" />
     <ClCompile Include="BSplineCurveEvaluator.cpp" />
+    <ClCompile Include="C2InterpolatingCurve.cpp" />
     <ClCompile Include="curve.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -273,6 +274,7 @@
   <ItemGroup>
     <ClInclude Include="BezierCurveEvaluator.h" />
     <ClInclude Include="BSplineCurveEvaluator.h" />
+    <ClInclude Include="C2InterpolatingCurve.h" />
     <ClInclude Include="curve.h" />
     <ClInclude Include="curveevaluator.h" />
     <ClInclude Include="IKSolver.h" />
