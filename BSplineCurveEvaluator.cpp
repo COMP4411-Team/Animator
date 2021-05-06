@@ -15,7 +15,9 @@ void BSplineCurveEvaluator::evaluateCurve(const std::vector<Point>& ptvCtrlPts,
 	const float& fAniLength,
 	const bool& bWrap) const {
 	ptvEvaluatedCurvePts.clear();
+
 	if(bWrap) return Wrap(ptvCtrlPts, ptvEvaluatedCurvePts, fAniLength, bWrap);
+
 	return noWrap(ptvCtrlPts, ptvEvaluatedCurvePts, fAniLength, bWrap);
 }
 
