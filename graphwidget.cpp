@@ -23,6 +23,7 @@
 #include <fstream>
 
 #include "BezierCurveEvaluator.h"
+#include "BSplineCurveEvaluator.h"
 #include "C2InterpolatingCurve.h"
 #include "GraphWidget.h"
 
@@ -118,7 +119,7 @@ m_flcCurrCurve(FL_BLACK)
 	m_ppceCurveEvaluators[CURVE_TYPE_LINEAR] = new LinearCurveEvaluator();
 
 	// TODO: replace the linear evaluator for one of the three types of curves
-	m_ppceCurveEvaluators[CURVE_TYPE_BSPLINE] = new LinearCurveEvaluator();
+	m_ppceCurveEvaluators[CURVE_TYPE_BSPLINE] = new BSplineCurveEvaluator();
 	m_ppceCurveEvaluators[CURVE_TYPE_BEZIER] = new BezierCurveEvaluator();
 	m_ppceCurveEvaluators[CURVE_TYPE_CATMULLROM] = new LinearCurveEvaluator();
 	// Note that C2-Interpolating curve is not a requirement
