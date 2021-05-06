@@ -92,13 +92,13 @@ void BezierCurveEvaluator::evaluateSegment(int start, const std::vector<Point>& 
 		Y[i] = control_points[(start + i) % size].y;
 	}
 
-	if (X[3] < X[0])
+	if (X[3] <= X[0])
 		X[3] += animation_length;
 
 	float prevX = X[0];
 	float prevY = Y[0];
 
-	int segCount = X[3] < X[0] ? s_iSegCount * 3 : s_iSegCount;
+	int segCount = X[3] <= X[0] ? s_iSegCount * 3 : s_iSegCount;
 	
 	for (int i = 0; i < segCount; ++i)
 	{
