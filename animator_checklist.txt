@@ -3,6 +3,18 @@ Animator Bells and Whistles Checklist for grading
 
 HKUST login(s): bhuai hqinac
 
+############################################################
+As in the modeler project, we use the Assimp library.
+
+please make sure you place assimp-vc142-mt.dll (can be found in the root directory) 
+under the same path of the executive. 
+
+The linker should link to the additional library under ./lib and the include directories 
+should contain ./assimp-5.0.1
+
+(By default all the above have already be done if you open the project using VS)
+############################################################
+
 Delete yes/no when appropriate
 
 1W tension control				yes
@@ -18,5 +30,5 @@ to twist the camera
 There is a Use Cel Shading in the list
 
 8B+ mouse/keyboard computer games (using IK)		yes (only the IK part)
-You need to first enable the IK in IK config and set the related constraints, then modify
+You need to first enable IK in menu->IK Config and set the related constraints, then modify
 the IK X/Y/Z Position in the left list using the curve editor
