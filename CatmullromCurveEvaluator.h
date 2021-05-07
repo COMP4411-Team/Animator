@@ -7,6 +7,10 @@
 
 class CatmullromCurveEvaluator : public CurveEvaluator {
 public:
+	void setTension(float t){
+		tension = t;
+	}
+
 	void evaluateCurve(const std::vector<Point>& ptvCtrlPts,
 		std::vector<Point>& ptvEvaluatedCurvePts,
 		const float& fAniLength,

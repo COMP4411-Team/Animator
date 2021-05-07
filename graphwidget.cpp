@@ -522,6 +522,13 @@ void GraphWidget::scaleTime(const float fScale)
 	invalidateAllCurves();
 }
 
+void GraphWidget::tension(float t) {
+	CatmullromCurveEvaluator* temp = (CatmullromCurveEvaluator * )m_ppceCurveEvaluators[CURVE_TYPE_CATMULLROM];
+	temp->setTension(t);
+	temp = nullptr;
+	invalidateAllCurves();
+}
+
 void GraphWidget::selectCurrCurve(const int iMouseX, const int iMouseY)
 {
 	Point ptMouse(iMouseX, iMouseY);
