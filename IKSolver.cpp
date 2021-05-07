@@ -1,5 +1,6 @@
 #include "IKSolver.h"
 
+IKSolver IKSolver::instance;
 
 IKSolver::IKSolver()
 {

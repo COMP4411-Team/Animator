@@ -5,6 +5,9 @@
 
 class IKSolver
 {
+private:
+	IKSolver();
+	
 public:
 	enum class EndEffector
 	{
@@ -21,7 +24,10 @@ public:
 		float max_roll_angle{180.f}, min_roll_angle{-180.f};
 	};
 
-	IKSolver();
+	static IKSolver& getInstance()
+	{
+		return instance;
+	}
 	
 	void setBoneChain(EndEffector end);
 	void setContext();
@@ -45,11 +51,14 @@ public:
 	int max_iter{20};
 	bool show_ik_result{false};
 	bool enable_constraints{false};
+	bool enableIK{true};
 
 private:
 	bool isApproximatelyEqual(const aiVector3D& a, const aiVector3D& b);
 	float clamp(float value, float lower_bound, float upper_bound);
 	static aiVector3D degree2Radian(const aiVector3D& angles);
 	static aiVector3D radian2Degree(const aiVector3D& angles);
+
+	static IKSolver instance;
 };
 

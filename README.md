@@ -58,6 +58,6 @@
   
 * [ ] 4B Support subdivision surfaces.
   
-* [ ] 8B(?) Inverse kinematics.
+* [x] 8B(?) Inverse kinematics.
   
 * [ ] 8B(?) Interactive control of physically-based animation.

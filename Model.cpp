@@ -27,7 +27,6 @@ float tick = 0.f;
 float cur_fov = 30.f;
 float cur_zfar = 100.f;
 LSystem l_system;
-IKSolver solver;
 Torus* torus; 
 
 // To make a SampleModel, we inherit off of ModelerView
@@ -506,8 +505,16 @@ void SampleModel::draw()
 		//	animate();
 
 		// Apply the solution of IKSolver
-		if (solver.show_ik_result)
+		if (IKSolver::getInstance().enableIK)
+		{
+			IKSolver& solver = IKSolver::getInstance();
+			
+			solver.show_ik_result = true;
+			solver.offset = aiVector3D(VAL(IK_XPOS), VAL(IK_YPOS), VAL(IK_ZPOS));
+			solver.setContext();
+			solver.solve();
 			solver.applyRotation(mesh);
+		}
 
 		// Apply controls to bones and render them
 		glPushMatrix();
@@ -530,8 +537,16 @@ void SampleModel::draw()
 		//glRotated(180, 1, 0, 0);
 
 		// Apply the solution of IKSolver
-		if (solver.show_ik_result)
+		if (IKSolver::getInstance().enableIK)
+		{
+			IKSolver& solver = IKSolver::getInstance();
+			
+			solver.show_ik_result = true;
+			solver.offset = aiVector3D(VAL(IK_XPOS), VAL(IK_YPOS), VAL(IK_ZPOS));
+			solver.setContext();
+			solver.solve();
 			solver.applyRotation(mesh);
+		}
 
 		// Render the meshes
 		traverseBoneHierarchy(mesh, scene->mRootNode, Matrix4f());
@@ -594,8 +609,8 @@ int main()
 		helper.meshes[i].parent = &helper.meshes[0];
 
 	Mesh& mesh = helper.meshes[helper.active_index];
-	solver.scene = scene;
-	solver.mesh = &mesh;
+	IKSolver::getInstance().scene = scene;
+	IKSolver::getInstance().mesh = &mesh;
 
 	// Set the particle system
 	ParticleSystem* particle = new ParticleSystem();
@@ -620,6 +635,10 @@ int main()
     controls[XPOS] = ModelerControl("X Position", -5, 5, 0.1f, 0);
     controls[YPOS] = ModelerControl("Y Position", 0, 5, 0.1f, 0);
     controls[ZPOS] = ModelerControl("Z Position", -5, 5, 0.1f, 0);
+
+	controls[IK_XPOS] = ModelerControl("IK X Position", -20, 20, 0.01f, 0);
+    controls[IK_YPOS] = ModelerControl("IK Y Position", -20, 20, 0.01f, 0);
+    controls[IK_ZPOS] = ModelerControl("IK Z Position", -20, 20, 0.01f, 0);
 
 	controls[LIGHT0_ENABLE] = ModelerControl("Open Light source 0?", 0, 1, 1, 1);
 	controls[LIGHTX_0] = ModelerControl("Light0 X Position", -10, 10, 0.1f, 4);

@@ -42,6 +42,23 @@ public:
 	void redrawModelerView();
     void autoLoadNPlay();
 
+	// IK
+	static void cb_chooseEndEffector(Fl_Widget*, void*);
+	static void cb_solveIk(Fl_Widget*, void*);
+	static void cb_closeIkDialog(Fl_Window*, void*);
+	static void cb_jointChoice(Fl_Widget* o, void* v);
+	static void cb_yawMax(Fl_Widget* o, void* v);
+	static void cb_yawMin(Fl_Widget* o, void* v);
+	static void cb_pitchMax(Fl_Widget* o, void* v);
+	static void cb_pitchMin(Fl_Widget* o, void* v);
+	static void cb_rollMax(Fl_Widget* o, void* v);
+	static void cb_rollMin(Fl_Widget* o, void* v);
+	static void cb_enableConstraints(Fl_Widget* o, void* v);
+	static void cb_enableYaw(Fl_Widget* o, void* v);
+	static void cb_enablePitch(Fl_Widget* o, void* v);
+	static void cb_enableRoll(Fl_Widget* o, void* v);
+	static void cb_showIkDialog(Fl_Menu_* o, void*);
+
 protected:
 
 	Fl_Box* labelBox(int nBox);
