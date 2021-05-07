@@ -14,6 +14,7 @@ void CatmullromCurveEvaluator::evaluateCurve(const std::vector<Point>& ptvCtrlPt
 	const float& fAniLength,
 	const bool& bWrap) const {
 	ptvEvaluatedCurvePts.clear();
+	
 
 	if (bWrap) return Wrap(ptvCtrlPts, ptvEvaluatedCurvePts, fAniLength, bWrap);
 
@@ -24,11 +25,14 @@ void CatmullromCurveEvaluator::Wrap(const std::vector<Point>& ptvCtrlPts,
 	std::vector<Point>& ptvEvaluatedCurvePts,
 	float fAniLength, bool bWarp) const {
 
+	float px = ptvCtrlPts[0].x;
+	float  py = ptvCtrlPts[0].y;
+
 	int size = ptvCtrlPts.size();
 	if (size == 0) return;
 
 	for (int i = 0; i < size ; i++) {
-		evaluateCSpline(i, ptvCtrlPts, ptvEvaluatedCurvePts, fAniLength, bWarp);
+		evaluateCSpline(i, ptvCtrlPts, ptvEvaluatedCurvePts, fAniLength, bWarp, px, py);
 	}
 }
 
@@ -36,13 +40,16 @@ void CatmullromCurveEvaluator::noWrap(const std::vector<Point>& ptvCtrlPts,
 	std::vector<Point>& ptvEvaluatedCurvePts,
 	float fAniLength, bool bWarp) const {
 
+	float px = ptvCtrlPts[0].x;
+	float  py = ptvCtrlPts[0].y;
+
 	int size = ptvCtrlPts.size();
 	if (size == 0) return;
 
 	ptvEvaluatedCurvePts.emplace_back(0, ptvCtrlPts[0].y);
 
 	for (int i = 0; i < size-1; i++) {
-		evaluateCSpline(i, ptvCtrlPts, ptvEvaluatedCurvePts, fAniLength, bWarp);
+		evaluateCSpline(i, ptvCtrlPts, ptvEvaluatedCurvePts, fAniLength, bWarp,px, py);
 	}
 
 	ptvEvaluatedCurvePts.emplace_back(fAniLength, ptvCtrlPts[size - 1].y);
@@ -50,7 +57,7 @@ void CatmullromCurveEvaluator::noWrap(const std::vector<Point>& ptvCtrlPts,
 
 void CatmullromCurveEvaluator::evaluateCSpline(int i, const std::vector<Point>& ptvCtrlPts,
 	std::vector<Point>& ptvEvaluatedCurvePts,
-	float fAniLength, bool bWarp) const {
+	float fAniLength, bool bWarp, float prevX, float prevY) const {
 	
 	int size = ptvCtrlPts.size();
 	Vec4f X, Y;
@@ -99,7 +106,15 @@ void CatmullromCurveEvaluator::evaluateCSpline(int i, const std::vector<Point>& 
 			ptvEvaluatedCurvePts.emplace_back(x - fAniLength, y);
 		}
 		else {
+			if (x < prevX||x>X[3]) {
+				x = prevX + s_fFlatnessEpsilon;
+				//if (prevY<Y[3] && prevY>y) y = prevY + s_fFlatnessEpsilon;
+				//else if(prevY>Y[3] && prevY<y) y = prevY - s_fFlatnessEpsilon;
+				
+			}
 			ptvEvaluatedCurvePts.emplace_back(x, y);
+			prevX = x;
+			prevY = y;
 		}
 
 	}

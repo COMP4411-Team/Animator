@@ -27,7 +27,7 @@ private:
 
 	void evaluateCSpline(int i, const std::vector<Point>& ptvCtrlPts,
 		std::vector<Point>& ptvEvaluatedCurvePts,
-		float fAniLength, bool bWarp) const;
+		float fAniLength, bool bWarp, float prevX, float prevY) const;
 
 	float tension{0.5};
 	static Mat4f BazierMatrix;
