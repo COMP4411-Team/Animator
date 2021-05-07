@@ -1,7 +1,7 @@
 # Animator
 
 * [ ] W (at most 3W) Enhance the required spline options.
-      * [x] tension control
+* [x] tension control
   
 * [ ] W Extends your project so that it support the use of the transparent TGA files.
   
