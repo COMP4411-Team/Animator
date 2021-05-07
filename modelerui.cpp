@@ -241,10 +241,32 @@ void ModelerUI::cb_aniLen(Fl_Menu_* o, void* v)
 	((ModelerUI*)(o->parent()->user_data()))->cb_aniLen_i(o,v);
 }
 
+inline void ModelerUI::cb_tension_i(Fl_Menu_*, void*)
+{
+	float iTension;
+	const char* szTension = NULL;
+	do {
+		szTension = fl_input("New tension(0 ~ 2)", "0.1");
+
+		if (szTension) {
+			iTension = atof(szTension);
+			tension((float)iTension);
+		}
+	} while (szTension && (iTension < 0 || iTension > 2));
+}
+
+void ModelerUI::cb_tension(Fl_Menu_* o, void* v)
+{
+	((ModelerUI*)(o->parent()->user_data()))->cb_tension_i(o, v);
+}
+
+
+
 inline void ModelerUI::cb_fps_i(Fl_Slider*, void*) 
 {
 	fps(m_psldrFPS->value());
 }
+
 
 void ModelerUI::cb_fps(Fl_Slider* o, void* v) 
 {
@@ -704,6 +726,16 @@ float ModelerUI::endTime() const
 	return m_pwndGraphWidget->endTime();
 }
 
+
+
+void ModelerUI::tension(float t)
+{
+	return m_pwndGraphWidget->tension(t);
+	m_pwndGraphWidget->redraw();
+	m_pwndIndicatorWnd->redraw();
+}
+
+
 void ModelerUI::playStartTime(float fTime)
 {
 	if (fTime >= 0.0f && fTime <= endTime()) {
@@ -888,6 +920,7 @@ m_bSaveMovie(false)
 	m_pmiLowQuality->callback((Fl_Callback*)cb_low);
 	m_pmiPoorQuality->callback((Fl_Callback*)cb_poor);
 	m_pmiSetAniLen->callback((Fl_Callback*)cb_aniLen);
+	m_pmiSetTension->callback((Fl_Callback*)cb_tension);
 	m_pbrsBrowser->callback((Fl_Callback*)cb_browser);
 	m_ptabTab->callback((Fl_Callback*)cb_tab);
 	m_pwndGraphWidget->callback((Fl_Callback*)cb_graphWidget);

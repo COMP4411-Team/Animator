@@ -27,7 +27,7 @@ void CatmullromCurveEvaluator::Wrap(const std::vector<Point>& ptvCtrlPts,
 	int size = ptvCtrlPts.size();
 	if (size == 0) return;
 
-	for (int i = 0; i <= size-1 ; i++) {
+	for (int i = 0; i < size ; i++) {
 		evaluateCSpline(i, ptvCtrlPts, ptvEvaluatedCurvePts, fAniLength, bWarp);
 	}
 }
@@ -59,7 +59,7 @@ void CatmullromCurveEvaluator::evaluateCSpline(int i, const std::vector<Point>& 
 	p1 = ptvCtrlPts[i%size];
 	p2 = ptvCtrlPts[(i + 1)%size];
 
-	if (p2.x < p1.x) 
+	if (p2.x <= p1.x) 
 		p2.x += fAniLength;
 
 	X[0] = p1.x;
@@ -70,7 +70,7 @@ void CatmullromCurveEvaluator::evaluateCSpline(int i, const std::vector<Point>& 
 
 	if (!bWarp) {
 		p0= (i-1<0)? ptvCtrlPts[0]: ptvCtrlPts[i-1];
-		p3 = (i+2>=size)? ptvCtrlPts[i+1]: ptvCtrlPts[i + 2];
+		p3 = (i+2>=size)? ptvCtrlPts[size-1]: ptvCtrlPts[i + 2];
 	}
 	else {
 		p3 = ptvCtrlPts[(i + 2) % size];
@@ -85,7 +85,7 @@ void CatmullromCurveEvaluator::evaluateCSpline(int i, const std::vector<Point>& 
 	X[2] = (p2 - tension / 3.0 * (p3 - p1)).x;
 	Y[2] = (p2 - tension / 3.0 * (p3 - p1)).y;
 
-	int segCount = s_iSegCount * 3;
+	int segCount = s_iSegCount;
 
 	for (int k = 0; k < segCount; ++k)
 	{

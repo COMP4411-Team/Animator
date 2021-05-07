@@ -27,6 +27,8 @@ public:
 	float currTime() const;
 	void endTime(float fEndTime);
 	float endTime() const;
+	void tension(float t);
+	//float tension() const;
 	void playStartTime(float fTime);
 	float playStartTime() const;
 	void playEndTime(float fTime);
@@ -92,6 +94,8 @@ private:
 	static void cb_poor(Fl_Menu_*, void*);
 	inline void cb_aniLen_i(Fl_Menu_*, void*);
 	static void cb_aniLen(Fl_Menu_*, void*);
+	inline void cb_tension_i(Fl_Menu_*, void*);
+	static void cb_tension(Fl_Menu_*, void*);
 	inline void cb_fps_i(Fl_Slider*, void*);
 	static void cb_fps(Fl_Slider*, void*);
 	inline void cb_m_modelerWindow_i(Fl_Window*, void*);

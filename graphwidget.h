@@ -91,6 +91,8 @@ public:
 	void endTime(const float fEndTime);
 	void scaleTime(const float scale_factor);
 
+	void tension(float t);
+
 	int addCurve(const float fStartVal, const float fMinY, const float fMaxY);
 	void currCurveType(int iCurveType);
 	int currCurveType() const;
