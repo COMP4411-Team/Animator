@@ -1,20 +1,18 @@
 #pragma once
 
-
 #include "CurveEvaluator.h"
 #include "mat.h"
 
 //using namespace std;
 
-class BSplineCurveEvaluator : public CurveEvaluator
-{
+class CatmullromCurveEvaluator : public CurveEvaluator {
 public:
 	void evaluateCurve(const std::vector<Point>& ptvCtrlPts,
 		std::vector<Point>& ptvEvaluatedCurvePts,
 		const float& fAniLength,
 		const bool& bWrap) const override;
-private:
 
+private:
 	void Wrap(const std::vector<Point>& ptvCtrlPts,
 		std::vector<Point>& ptvEvaluatedCurvePts,
 		float fAniLength, bool bWarp) const;
@@ -23,10 +21,10 @@ private:
 		std::vector<Point>& ptvEvaluatedCurvePts,
 		float fAniLength, bool bWarp) const;
 
-	void evaluateBSpline(int i, const std::vector<Point>& ptvCtrlPts,
+	void evaluateCSpline(int i, const std::vector<Point>& ptvCtrlPts,
 		std::vector<Point>& ptvEvaluatedCurvePts,
 		float fAniLength, bool bWarp) const;
 
-	static Mat4f BSMatrix;
+	float tension{0.5};
+	static Mat4f BazierMatrix;
 };
-

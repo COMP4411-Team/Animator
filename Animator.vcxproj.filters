@@ -29,6 +29,7 @@
     <ClCompile Include="rulerwindow.cpp" />
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="C2InterpolatingCurve.cpp" />
+    <ClCompile Include="CatmullromCurveEvaluator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BezierCurveEvaluator.h" />
@@ -60,6 +61,7 @@
     <ClInclude Include="Torus.h" />
     <ClInclude Include="vec.h" />
     <ClInclude Include="C2InterpolatingCurve.h" />
+    <ClInclude Include="CatmullromCurveEvaluator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cleanskel.pl" />
