@@ -44,7 +44,7 @@
   
 * [ ] 2B Implement picking of a part in the model hierarchy.
   
-* [ ] 2B Implement Quaternions as a method for avoiding the gimbal lock.
+* [x] 2B Implement Quaternions as a method for avoiding the gimbal lock.
   
 * [ ] 2B Draw bspline surface in the 3D scene. In this extension, you are required to allow user to adjust the control points.
   

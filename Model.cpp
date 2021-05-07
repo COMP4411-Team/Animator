@@ -312,6 +312,8 @@ void SampleModel::draw()
 {
 	ModelerDrawState *mds = ModelerDrawState::Instance();
 	mds->enableCelShading = VAL(CEL_SHADING) > 0;
+
+	m_camera->useQuaternion = m_ctrl_camera->useQuaternion = m_curve_camera->useQuaternion = VAL(USE_QUATERNION) > 0;
 	
 	// Change LOD
 	int lod = VAL(LOD);
@@ -644,6 +646,8 @@ int main()
     controls[IK_ZPOS] = ModelerControl("IK Z Position", -20, 20, 0.01f, 0);
 
 	controls[CEL_SHADING] = ModelerControl("Use Cel Shading", 0, 1, 1, 0);
+
+	controls[USE_QUATERNION] = ModelerControl("Use Quaternion", 0, 1, 1, 0);
 
 	controls[LIGHT0_ENABLE] = ModelerControl("Open Light source 0?", 0, 1, 1, 1);
 	controls[LIGHTX_0] = ModelerControl("Light0 X Position", -10, 10, 0.1f, 4);

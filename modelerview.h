@@ -38,6 +38,9 @@ public:
 	float t;
 	void update();
 	bool save_bmp;
+
+	bool l_button_pressed{false};
+	bool r_button_pressed{false};
 };
 
 

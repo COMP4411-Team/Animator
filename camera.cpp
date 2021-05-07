@@ -7,6 +7,7 @@
 #include "Curve.h"
 #include "CurveEvaluator.h"
 #include "LinearCurveEvaluator.h"
+#include "assimp/quaternion.inl"
 
 #pragma warning(push)
 #pragma warning(disable : 4244)
@@ -19,6 +20,7 @@ const float kMouseRotationSensitivity		= 1.0f/90.0f;
 const float kMouseTranslationXSensitivity	= 0.03f;
 const float kMouseTranslationYSensitivity	= 0.03f;
 const float kMouseZoomSensitivity			= 0.08f;
+const float kMouseTwistSensitivity = 0.01f;
 
 void MakeDiagonal(Mat4f &m, float k)
 {
@@ -108,6 +110,9 @@ void MakeCamTrans(Mat4f &m, Vec3f &eye,
 
 void Camera::calculateViewingTransformParameters() 
 {
+	if (useQuaternion)
+		return calParamsFromQuat();
+	
 	// compute new transformation based on
 	// user interaction
 	Mat4f dollyXform;
@@ -121,7 +126,8 @@ void Camera::calculateViewingTransformParameters()
 	MakeHTrans(dollyXform, Vec3f(0,0,mDolly));
 	MakeHRotY(azimXform, mAzimuth);
 	MakeHRotX(elevXform, mElevation);
-	MakeDiagonal(twistXform, 1.0f);
+	// MakeDiagonal(twistXform, 1.0f);
+	MakeHRotZ(twistXform, mTwist);
 	MakeHTrans(originXform, mLookAt);
 	
 	mPosition = Vec3f(0,0,0);
@@ -132,6 +138,28 @@ void Camera::calculateViewingTransformParameters()
 		mUpVector= Vec3f(0,-1,0);
 	else
 		mUpVector= Vec3f(0,1,0);
+
+	mUpVector = twistXform * mUpVector;
+
+	mDirtyTransform = false;
+}
+
+void Camera::calParamsFromQuat()
+{
+	auto pos = rotation.Rotate(aiVector3D(0, 0, mDolly));
+	mPosition = Vec3f(pos.x, pos.y, pos.z);
+	Mat4f originXform;
+	MakeHTrans(originXform, mLookAt);
+	mPosition = originXform * mPosition;
+
+	aiVector3D up;
+	if ( fmod(double(mElevation), 2.0*M_PI) < -M_PI/2 || fmod(double(mElevation), 2.0*M_PI) > M_PI/2 )
+		up = aiVector3D(0,-1,0);
+	else
+		up = aiVector3D(0,1,0);
+	
+	up = rotation.Rotate(up);
+	mUpVector = Vec3f(up.x, up.y, up.z);
 
 	mDirtyTransform = false;
 }
@@ -215,6 +243,12 @@ void Camera::dragMouse( int x, int y )
 		{
 			float dAzimuth		=   -mouseDelta[0] * kMouseRotationSensitivity;
 			float dElevation	=   mouseDelta[1] * kMouseRotationSensitivity;
+
+			aiVector3D axis(-dElevation, -dAzimuth, 0);
+			float radian = axis.Length();
+
+			aiQuaternion current(axis, radian);
+			rotation = current * rotation;
 			
 			setAzimuth(getAzimuth() + dAzimuth);
 			setElevation(getElevation() + dElevation);
@@ -235,7 +269,12 @@ void Camera::dragMouse( int x, int y )
 			break;
 		}
 	case kActionTwist:
-		// Not implemented
+		{
+			setTwist(getTwist() - mouseDelta[0] * kMouseTwistSensitivity);
+			aiQuaternion current(aiVector3D(0, 0, 1), -mouseDelta[0] * kMouseTwistSensitivity);
+			rotation = current * rotation;
+			break;
+		}
 	default:
 		break;
 	}
