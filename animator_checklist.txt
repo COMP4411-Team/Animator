@@ -1,0 +1,18 @@
+Animator Bells and Whistles Checklist for grading 
+(submit ONLY if you have implemented any of the B&Ws below)
+
+HKUST login(s): bhuai hqinac
+
+Delete yes/no when appropriate
+
+2B C2 interpolating curve			yes
+
+2B quaternions				yes
+There is a Use Quaternion in the list
+
+3B cell shading				yes
+There is a Use Cel Shading in the list
+
+8B+ mouse/keyboard computer games (using IK)		yes (only the IK part)
+You need to first enable the IK in IK config and set the related constraints, then modify
+the IK X/Y/Z Position in the left list using the curve editor

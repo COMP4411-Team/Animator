@@ -115,7 +115,10 @@ void ParticleSystem::computeForcesAndUpdateParticles(float t)
 		}
 	}
 
-	aiVector3D accel = (10.0f * emitters[0].initDir + gravity) / mass;
+	aiVector3D wind = emitters[0].initDir ^ aiVector3D(0, 1, 0);
+	wind *= 100 * sin(t * 100);
+	
+	aiVector3D accel = (10.0f * emitters[0].initDir + gravity + wind) / mass;
 	float deltaT = t - prevT;
 	for (Particle& particle : particles)
 	{

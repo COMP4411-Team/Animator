@@ -975,6 +975,7 @@ m_bSaveMovie(false)
 	m_enableYaw->callback(cb_enableYaw);
 	m_enablePitch->callback(cb_enablePitch);
 	m_enableRoll->callback(cb_enableRoll);
+	m_enableIK->callback(cb_enableIK);
 
 	endTime(20.0f);
 }
@@ -1176,4 +1177,10 @@ void ModelerUI::cb_enableRoll(Fl_Widget* o, void* v)
 void ModelerUI::cb_showIkDialog(Fl_Menu_* o, void*)
 {
 	((ModelerUI*)(o->parent()->user_data()))->m_ikDialog->show();
+}
+
+void ModelerUI::cb_enableIK(Fl_Widget* o, void* v)
+{
+	auto* button = (Fl_Light_Button*)o;
+	IKSolver::getInstance().enableIK = button->value();
 }

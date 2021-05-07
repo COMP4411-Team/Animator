@@ -45,6 +45,7 @@ public:
     void autoLoadNPlay();
 
 	// IK
+	static void cb_enableIK(Fl_Widget* o, void* v);
 	static void cb_chooseEndEffector(Fl_Widget*, void*);
 	static void cb_solveIk(Fl_Widget*, void*);
 	static void cb_closeIkDialog(Fl_Window*, void*);

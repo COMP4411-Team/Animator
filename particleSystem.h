@@ -104,7 +104,7 @@ protected:
 	int maxNumParticle{3000};
 	float mass{1.0f};
 	float lifespan{1.5f};
-	float renderingRadius{0.01f};
+	float renderingRadius{0.02f};
 	float drag{0.3};
 };
 

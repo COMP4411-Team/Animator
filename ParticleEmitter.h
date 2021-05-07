@@ -26,6 +26,6 @@ protected:
 	float randomness{0.1f};
 	float emissionStartTime{0.0f};
 	float emissionEndTime{3600.0f};
-	float initialSpeed{1.0f};
+	float initialSpeed{5.0f};
 };
 

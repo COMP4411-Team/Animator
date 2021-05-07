@@ -388,5 +388,9 @@ ModelerUIWindows::ModelerUIWindows() {
 	m_enableRoll->user_data(this);
 	m_enableRoll->value(1);
 
+	m_enableIK = new Fl_Light_Button(300, 240, 90, 30, "Enable IK");
+	m_enableIK->user_data(this);
+	m_enableIK->value(0);
+
 	m_ikDialog->end();
 }

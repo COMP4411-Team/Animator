@@ -96,5 +96,6 @@ public:
 	Fl_Check_Button* m_enableYaw;
 	Fl_Check_Button* m_enableRoll;
 	Fl_Check_Button* m_enablePitch;
+	Fl_Light_Button* m_enableIK;
 };
 #endif

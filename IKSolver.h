@@ -51,7 +51,7 @@ public:
 	int max_iter{20};
 	bool show_ik_result{false};
 	bool enable_constraints{false};
-	bool enableIK{true};
+	bool enableIK{false};
 
 private:
 	bool isApproximatelyEqual(const aiVector3D& a, const aiVector3D& b);
