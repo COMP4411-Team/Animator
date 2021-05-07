@@ -5,6 +5,9 @@ HKUST login(s): bhuai hqinac
 
 Delete yes/no when appropriate
 
+1W tension control				yes
+it is on Animation->set tension.
+
 2B C2 interpolating curve			yes
 
 2B quaternions				yes
