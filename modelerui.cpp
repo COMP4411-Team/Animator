@@ -731,9 +731,8 @@ float ModelerUI::endTime() const
 
 void ModelerUI::tension(float t)
 {
-	return m_pwndGraphWidget->tension(t);
+	m_pwndGraphWidget->tension(t);
 	m_pwndGraphWidget->redraw();
-	m_pwndIndicatorWnd->redraw();
 }
 
 
