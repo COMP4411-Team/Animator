@@ -52,7 +52,7 @@
   
 * [ ] 3B Support motion warping.
   
-* [ ] 3B Implement Cel Shading.
+* [x] 3B Implement Cel Shading.
   
 * [ ] 4B Simulate rigid-body.
   
