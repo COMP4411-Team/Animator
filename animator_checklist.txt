@@ -8,7 +8,8 @@ Delete yes/no when appropriate
 2B C2 interpolating curve			yes
 
 2B quaternions				yes
-There is a Use Quaternion in the list
+There is a Use Quaternion in the list, press left AND right button of the mouse together
+to twist the camera
 
 3B cell shading				yes
 There is a Use Cel Shading in the list
