@@ -10,6 +10,7 @@
 #include "curve.h"
 #include "curveevaluator.h"
 #include <vector>
+#include <assimp/quaternion.h>
 
 //==========[ class Camera ]===================================================
 
@@ -36,12 +37,15 @@ protected:
     bool		mDirtyTransform;
     
     void calculateViewingTransformParameters();
+	void calParamsFromQuat();
     
     Vec3f			mLastMousePosition;
     MouseAction_t	mCurrentMouseAction;
 
 	Curve *			mKeyframes[NUM_KEY_CURVES];
 	int				mNumKeyframes;
+
+	aiQuaternion rotation;
     
     
 public:
@@ -109,6 +113,9 @@ public:
 	bool saveKeyframes(const char* szFileName) const;
 	bool loadKeyframes(const char* szFileName);
 	float keyframeTime(int keyframe) const;
+
+	// Use quaternion
+	bool useQuaternion{false};
 };
 
 #endif

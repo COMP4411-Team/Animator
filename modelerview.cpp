@@ -44,6 +44,12 @@ int ModelerView::handle(int event)
 			{
 			case kMouseRotationButton:
 				if (!Fl::event_state(FL_ALT)) {
+					l_button_pressed = true;
+					if (l_button_pressed && r_button_pressed)
+					{
+						m_camera->clickMouse(kActionTwist, eventCoordX, eventCoordY);
+						break;
+					}
 					m_camera->clickMouse(kActionRotate, eventCoordX, eventCoordY );
 					break;
 				} // ALT + LEFT = MIDDLE
@@ -51,6 +57,12 @@ int ModelerView::handle(int event)
 				m_camera->clickMouse(kActionTranslate, eventCoordX, eventCoordY );
 				break;
 			case kMouseZoomButton:
+				r_button_pressed = true;
+				if (l_button_pressed && r_button_pressed)
+				{
+					m_camera->clickMouse(kActionTwist, eventCoordX, eventCoordY);
+					break;
+				}
 				m_camera->clickMouse(kActionZoom, eventCoordX, eventCoordY );
 				break;
 			}
@@ -68,8 +80,14 @@ int ModelerView::handle(int event)
 			switch(eventButton)
 			{
 			case kMouseRotationButton:
+				r_button_pressed = false;
+				m_camera->releaseMouse(eventCoordX, eventCoordY );
+				break;
 			case kMouseTranslationButton:
+				m_camera->releaseMouse(eventCoordX, eventCoordY );
+				break;
 			case kMouseZoomButton:
+				l_button_pressed = false;
 				m_camera->releaseMouse(eventCoordX, eventCoordY );
 				break;
 			}
