@@ -52,12 +52,12 @@
   
 * [ ] 3B Support motion warping.
   
-* [ ] 3B Implement Cel Shading.
+* [x] 3B Implement Cel Shading.
   
 * [ ] 4B Simulate rigid-body.
   
 * [ ] 4B Support subdivision surfaces.
   
-* [ ] 8B(?) Inverse kinematics.
+* [x] 8B(?) Inverse kinematics.
   
 * [ ] 8B(?) Interactive control of physically-based animation.

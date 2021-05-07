@@ -5,6 +5,7 @@
 
 #include "modelerglobals.h"
 #include "ModelHelper.h"
+#include "modelerview.h"
 
 // ********************************************************
 // Support functions from previous version of modeler
@@ -408,6 +409,32 @@ void drawTriangle( double x1, double y1, double z1,
         d = x3-x1;
         e = y3-y1;
         f = z3-z1;
+
+        //if (mds->enableCelShading)
+        //{
+	       // glBegin(GL_TRIANGLES);
+	       // glDisable(GL_LIGHTING);
+
+	       // aiVector3D normal(b * f - c * e, c * d - a * f, a * e - b * d);
+	       // aiVector3D color(1, 1, 0);
+
+	       // auto shade = celShading(normal, aiVector3D(x1, y1, z1), color);
+	       // glColor3f(shade.x, shade.y, shade.z);
+	       // glVertex3d(x1, y1, z1);
+
+	       // shade = celShading(normal, aiVector3D(x2, y2, z2), color);
+	       // glColor3f(shade.x, shade.y, shade.z);
+	       // glVertex3d(x2, y2, z2);
+
+	       // shade = celShading(normal, aiVector3D(x3, y3, z3), color);
+	       // glColor3f(shade.x, shade.y, shade.z);
+	       // glVertex3d(x3, y3, z3);
+
+	       // glEnd();
+	       // glEnable(GL_LIGHTING);
+
+	       // return;
+        //}
         
         glBegin( GL_TRIANGLES );
         glNormal3d( b*f - c*e, c*d - a*f, a*e - b*d );
@@ -462,6 +489,32 @@ void drawTriangle(Mesh& mesh, const aiFace& face)
         d = x3-x1;
         e = y3-y1;
         f = z3-z1;
+
+    		if (mds->enableCelShading)
+    		{
+			glDisable(GL_LIGHTING);
+			glBegin(GL_TRIANGLES);
+
+    			aiVector3D normal{b*f - c*e, c*d - a*f, a*e - b*d};
+    			aiVector3D color{0.87f, 0.72f, 0.53f};
+
+    			auto shade = celShading(normal, {x1, y1, z1}, color);
+    			glColor3f(shade.x, shade.y, shade.z);
+			glVertex3f(x1, y1, z1);
+
+			shade = celShading(normal, {x2, y2, z2}, color);
+    			glColor3f(shade.x, shade.y, shade.z);
+			glVertex3f(x2, y2, z2);
+
+			shade = celShading(normal, {x3, y3, z3}, color);
+    			glColor3f(shade.x, shade.y, shade.z);
+			glVertex3f(x3, y3, z3);
+    			
+    			glEnd();
+			glEnable(GL_LIGHTING);
+    			
+    			return;
+    		}
 
         glBegin( GL_TRIANGLES );
         glNormal3f( b*f - c*e, c*d - a*f, a*e - b*d );
@@ -733,4 +786,43 @@ void drawSphere(float radius, const aiVector3D& position)
 	glTranslatef(position.x, position.y, position.z);
 	drawSphere(radius);
 	glPopMatrix();
+}
+
+aiVector3D celShading(const aiVector3D& normal, const aiVector3D& pos, const aiVector3D& color)
+{
+    aiVector3D lightPosition0{5, 5, 5};
+	aiVector3D lightPosition1{-5, -5, -5};
+
+	float celShadingThreshold[4] = {0.02f, 0.1f, 0.6f, 0.9f};
+    float celShadingVal[4] = {0.1f, 0.5f, 0.87f, 0.95f};
+
+	auto lightDir = (lightPosition0 - pos).Normalize();
+	float lDotN = lightDir * normal;
+
+	aiVector3D color0 = color;
+
+	if (lDotN < celShadingThreshold[0])
+        color0 = color * celShadingVal[0];
+	else if (lDotN < celShadingThreshold[1])
+		color0 = color * celShadingVal[1];
+	else if (lDotN < celShadingThreshold[2])
+		color0 = color * celShadingVal[2];
+	else if (lDotN < celShadingThreshold[3])
+		color0 = color * celShadingVal[3];
+
+
+	lightDir = (lightPosition1 - pos).Normalize();
+	lDotN = lightDir * normal;
+	aiVector3D color1 = color;
+
+	if (lDotN < celShadingThreshold[0])
+        color1 = color * celShadingVal[0];
+	else if (lDotN < celShadingThreshold[1])
+		color1 = color * celShadingVal[1];
+	else if (lDotN < celShadingThreshold[2])
+		color1 = color * celShadingVal[2];
+	else if (lDotN < celShadingThreshold[3])
+		color1 = color * celShadingVal[3];
+
+	return (color0 + color1) * 0.5f;
 }

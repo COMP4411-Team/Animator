@@ -18,11 +18,13 @@
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Light_Button.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Value_Slider.H>
 #include "indicatorwindow.h"
 #include <FL/Fl_Slider.H>
 #include <FL/Fl_Output.H>
 #include "modelerview.h"
+#include <FL/Fl_Value_Input.H>
 
 class ModelerUIWindows {
 public:
@@ -43,7 +45,7 @@ public:
   static Fl_Menu_Item *m_pmiLowQuality;
   static Fl_Menu_Item *m_pmiPoorQuality;
   static Fl_Menu_Item *m_pmiSetAniLen;
-  static Fl_Menu_Item *m_pmiSetTension;
+	static Fl_Menu_Item* m_pmiIKSolver;
   Fl_Browser *m_pbrsBrowser;
   Fl_Tabs *m_ptabTab;
   Fl_Scroll *m_pscrlScroll;
@@ -75,5 +77,23 @@ public:
   Fl_Button *m_pbtRemoveAllCamKeyFrames;
   Fl_Window *m_pwndModelerWnd;
   ModelerView *m_pwndModelerView;
+
+	// IK
+	int jointChoice{0};
+	static Fl_Menu_Item m_endEffectorMenu[];
+	static Fl_Menu_Item m_jointMenu[];
+	Fl_Window* m_ikDialog;
+	Fl_Choice* m_endEffectorChoice;
+	Fl_Choice* m_jointChoice;
+	Fl_Value_Slider* m_yawMaxSlider;
+	Fl_Value_Slider* m_yawMinSlider;
+	Fl_Value_Slider* m_pitchMaxSlider;
+	Fl_Value_Slider* m_pitchMinSlider;
+	Fl_Value_Slider* m_rollMaxSlider;
+	Fl_Value_Slider* m_rollMinSlider;
+	Fl_Check_Button* m_enableConstraints;
+	Fl_Check_Button* m_enableYaw;
+	Fl_Check_Button* m_enableRoll;
+	Fl_Check_Button* m_enablePitch;
 };
 #endif

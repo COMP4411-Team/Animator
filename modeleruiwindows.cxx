@@ -2,6 +2,9 @@
 
 #include "modeleruiwindows.h"
 
+#include "IKSolver.h"
+#include "modelerui.h"
+
 Fl_Menu_Item ModelerUIWindows::menu_m_pmbMenuBar[] = {
  {"&File", 0,  0, 0, 64, 0, 0, 14, 0},
  {"&Open Animation Script...", 0,  0, 0, 0, 0, 0, 14, 0},
@@ -21,8 +24,8 @@ Fl_Menu_Item ModelerUIWindows::menu_m_pmbMenuBar[] = {
  {0},
  {"&Animation", 0,  0, 0, 64, 0, 0, 14, 0},
  {"&Set Animation Length", 0,  0, 0, 0, 0, 0, 14, 0},
- {"&Set tension", 0,  0, 0, 0, 0, 0, 14, 0},
  {0},
+	{"&IK Config", 0, 0, 0, 0},
  {0}
 };
 Fl_Menu_Item* ModelerUIWindows::m_pmiOpenAniScript = ModelerUIWindows::menu_m_pmbMenuBar + 1;
@@ -38,7 +41,7 @@ Fl_Menu_Item* ModelerUIWindows::m_pmiMediumQuality = ModelerUIWindows::menu_m_pm
 Fl_Menu_Item* ModelerUIWindows::m_pmiLowQuality = ModelerUIWindows::menu_m_pmbMenuBar + 13;
 Fl_Menu_Item* ModelerUIWindows::m_pmiPoorQuality = ModelerUIWindows::menu_m_pmbMenuBar + 14;
 Fl_Menu_Item* ModelerUIWindows::m_pmiSetAniLen = ModelerUIWindows::menu_m_pmbMenuBar + 17;
-Fl_Menu_Item* ModelerUIWindows::m_pmiSetTension = ModelerUIWindows::menu_m_pmbMenuBar + 18;
+Fl_Menu_Item* ModelerUIWindows::m_pmiIKSolver = ModelerUIWindows::menu_m_pmbMenuBar + 19;
 
 Fl_Menu_Item ModelerUIWindows::menu_m_pchoCurveType[] = {
  {"Linear", 0,  0, 0, 0, 0, 0, 12, 0},
@@ -47,6 +50,25 @@ Fl_Menu_Item ModelerUIWindows::menu_m_pchoCurveType[] = {
  {"Catmull-Rom", 0,  0, 0, 0, 0, 0, 12, 0},
  {"C2-Interpolating", 0,  0, 0, 0, 0, 0, 12, 0},
  {0}
+};
+
+using EndEffector = IKSolver::EndEffector;
+Fl_Menu_Item ModelerUIWindows::m_endEffectorMenu[] =
+{
+	{"Head", 0, (Fl_Callback*)nullptr, (void*)EndEffector::HEAD},
+	{"Left Fore Foot", 0, (Fl_Callback*)nullptr, (void*)EndEffector::LEFT_FORE_FOOT},
+	{"Right Fore Foot", 0, (Fl_Callback*)nullptr, (void*)EndEffector::RIGHT_FORE_FOOT},
+	{"Left Rear Foot", 0, (Fl_Callback*)nullptr, (void*)EndEffector::LEFT_REAR_FOOT},
+	{"Right Rear Foot", 0, (Fl_Callback*)nullptr, (void*)EndEffector::RIGHT_REAR_FOOT},
+	{0}
+};
+
+Fl_Menu_Item ModelerUIWindows::m_jointMenu[] =
+{
+	{"Root Joint", 0, (Fl_Callback*)nullptr, (void*)0},
+	{"Second Joint", 0, (Fl_Callback*)nullptr, (void*)1},
+	{"Third Joint", 0, (Fl_Callback*)nullptr, (void*)2},
+	{0}
 };
 
 ModelerUIWindows::ModelerUIWindows() {
@@ -293,4 +315,76 @@ ModelerUIWindows::ModelerUIWindows() {
     }
     o->end();
   }
+
+	m_ikDialog = new Fl_Window(700, 300, "Inverse Kinetics");
+	m_ikDialog->user_data(this);
+	
+	m_endEffectorChoice = new Fl_Choice(100, 30, 150, 25, "End Effector");
+	m_endEffectorChoice->user_data(this);
+	m_endEffectorChoice->menu(m_endEffectorMenu);
+
+	m_jointChoice = new Fl_Choice(300, 30, 150, 25, "Joint");
+	m_jointChoice->user_data(this);
+	m_jointChoice->menu(m_jointMenu);
+	
+	m_yawMaxSlider = new Fl_Value_Slider(430, 110, 250, 20, "Max Yaw Angle");
+	m_yawMaxSlider->range(0, 180);
+	m_yawMaxSlider->step(0.01);
+	m_yawMaxSlider->user_data(this);
+	m_yawMaxSlider->value(180);
+	m_yawMaxSlider->type(FL_HORIZONTAL);
+
+    m_yawMinSlider = new Fl_Value_Slider(150, 110, 250, 20, "Min Yaw Angle");
+    m_yawMinSlider->range(-180, 0);
+    m_yawMinSlider->step(0.01);
+    m_yawMinSlider->user_data(this);
+	m_yawMinSlider->value(-180);
+	m_yawMinSlider->type(FL_HORIZONTAL);
+
+	m_pitchMaxSlider = new Fl_Value_Slider(430, 150, 250, 20, "Max Pitch Angle");
+	m_pitchMaxSlider->range(0, 180);
+	m_pitchMaxSlider->step(0.01);
+	m_pitchMaxSlider->user_data(this);
+	m_pitchMaxSlider->value(180);
+	m_pitchMaxSlider->type(FL_HORIZONTAL);
+
+    m_pitchMinSlider = new Fl_Value_Slider(150, 150, 250, 20, "Min Pitch Angle");
+    m_pitchMinSlider->range(-180, 0);
+    m_pitchMinSlider->step(0.01);
+    m_pitchMinSlider->user_data(this);
+	m_pitchMinSlider->value(-180);
+	m_pitchMinSlider->type(FL_HORIZONTAL);
+
+	m_rollMaxSlider = new Fl_Value_Slider(430, 190, 250, 20, "Max Roll Angle");
+	m_rollMaxSlider->range(0, 180);
+	m_rollMaxSlider->step(0.01);
+	m_rollMaxSlider->user_data(this);
+	m_rollMaxSlider->value(180);
+	m_rollMaxSlider->type(FL_HORIZONTAL);
+
+    m_rollMinSlider = new Fl_Value_Slider(150, 190, 250, 20, "Min Roll Angle");
+    m_rollMinSlider->range(-180, 0);
+    m_rollMinSlider->step(0.01);
+    m_rollMinSlider->user_data(this);
+	m_rollMinSlider->value(-180);
+	m_rollMinSlider->type(FL_HORIZONTAL);
+
+
+	m_enableConstraints = new Fl_Check_Button(480, 30, 60, 25, "Enable Constraints");
+	m_enableConstraints->user_data(this);
+	m_enableConstraints->value(0);
+	
+	m_enableYaw = new Fl_Check_Button(30, 110, 70, 25, "Enable Yaw");
+	m_enableYaw->user_data(this);
+	m_enableYaw->value(1);
+	
+	m_enablePitch = new Fl_Check_Button(30, 150, 70, 25, "Enable Pitch");
+	m_enablePitch->user_data(this);
+	m_enablePitch->value(1);
+
+	m_enableRoll = new Fl_Check_Button(30, 190, 70, 25, "Enable Roll");
+	m_enableRoll->user_data(this);
+	m_enableRoll->value(1);
+
+	m_ikDialog->end();
 }

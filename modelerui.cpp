@@ -25,6 +25,7 @@
 
 #include "modelerui.h"
 #include "camera.h"
+#include "IKSolver.h"
 
 using namespace std;
 
@@ -949,6 +950,32 @@ m_bSaveMovie(false)
 	m_poutPlayStart->value("0.00");
 	m_poutPlayEnd->value("20.00");
 
+	// IK
+	for (int i = 0; i < 5; ++i)
+	{
+		m_endEffectorMenu[i].callback(cb_chooseEndEffector);
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		m_jointMenu[i].callback(cb_jointChoice);
+	}
+
+	m_pmiIKSolver->callback((Fl_Callback*) cb_showIkDialog);
+
+	m_endEffectorChoice->callback(cb_chooseEndEffector);
+	m_jointChoice->callback(cb_jointChoice);
+	m_yawMaxSlider->callback(cb_yawMax);
+	m_yawMinSlider->callback(cb_yawMin);
+	m_pitchMaxSlider->callback(cb_pitchMax);
+	m_pitchMinSlider->callback(cb_pitchMin);
+	m_rollMaxSlider->callback(cb_rollMax);
+	m_rollMinSlider->callback(cb_rollMin);
+	m_enableConstraints->callback(cb_enableConstraints);
+	m_enableYaw->callback(cb_enableYaw);
+	m_enablePitch->callback(cb_enablePitch);
+	m_enableRoll->callback(cb_enableRoll);
+
 	endTime(20.0f);
 }
 
@@ -1038,4 +1065,115 @@ void ModelerUI::autoLoadNPlay()
 		simulate(true);
 		animate(true);
 	}
+}
+
+// IK callback
+
+void ModelerUI::cb_chooseEndEffector(Fl_Widget* o, void* v)
+{
+	int value = (int)v;
+	IKSolver::getInstance().setBoneChain(static_cast<IKSolver::EndEffector>((int)v));
+}
+
+void ModelerUI::cb_jointChoice(Fl_Widget* o, void* v)
+{
+	auto* ui = ((ModelerUI*)(o->user_data()));
+	int choice = IKSolver::getInstance().constraints.size() - 1 - (int)v;
+	ui->jointChoice = choice;
+
+	auto& constraint = IKSolver::getInstance().constraints[choice];
+	ui->m_yawMaxSlider->value(constraint.max_yaw_angle);
+	ui->m_yawMinSlider->value(constraint.min_yaw_angle);
+	ui->m_pitchMaxSlider->value(constraint.max_pitch_angle);
+	ui->m_pitchMinSlider->value(constraint.min_pitch_angle);
+	ui->m_rollMaxSlider->value(constraint.max_roll_angle);
+	ui->m_rollMinSlider->value(constraint.min_roll_angle);
+
+	ui->m_enablePitch->value(constraint.enable_pitch);
+	ui->m_enableRoll->value(constraint.enable_roll);
+	ui->m_enableYaw->value(constraint.enable_yaw);
+}
+
+void ModelerUI::cb_yawMax(Fl_Widget* o, void* v)
+{
+	auto* ui = ((ModelerUI*)(o->user_data()));
+	auto* slider = (Fl_Slider*)o;
+	auto& constraint = IKSolver::getInstance().constraints[ui->jointChoice];
+	constraint.max_yaw_angle = slider->value();
+}
+
+void ModelerUI::cb_yawMin(Fl_Widget* o, void* v)
+{
+	auto* ui = ((ModelerUI*)(o->user_data()));
+	auto* slider = (Fl_Slider*)o;
+	auto& constraint = IKSolver::getInstance().constraints[ui->jointChoice];
+	constraint.min_yaw_angle = slider->value();
+}
+
+void ModelerUI::cb_pitchMax(Fl_Widget* o, void* v)
+{
+	auto* ui = ((ModelerUI*)(o->user_data()));
+	auto* slider = (Fl_Slider*)o;
+	auto& constraint = IKSolver::getInstance().constraints[ui->jointChoice];
+	constraint.max_pitch_angle = slider->value();
+}
+
+void ModelerUI::cb_pitchMin(Fl_Widget* o, void* v)
+{
+	auto* ui = ((ModelerUI*)(o->user_data()));
+	auto* slider = (Fl_Slider*)o;
+	auto& constraint = IKSolver::getInstance().constraints[ui->jointChoice];
+	constraint.min_pitch_angle = slider->value();
+}
+
+void ModelerUI::cb_rollMax(Fl_Widget* o, void* v)
+{
+	auto* ui = ((ModelerUI*)(o->user_data()));
+	auto* slider = (Fl_Slider*)o;
+	auto& constraint = IKSolver::getInstance().constraints[ui->jointChoice];
+	constraint.max_roll_angle = slider->value();
+}
+
+void ModelerUI::cb_rollMin(Fl_Widget* o, void* v)
+{
+	auto* ui = ((ModelerUI*)(o->user_data()));
+	auto* slider = (Fl_Slider*)o;
+	auto& constraint = IKSolver::getInstance().constraints[ui->jointChoice];
+	constraint.min_roll_angle = slider->value();
+}
+
+void ModelerUI::cb_enableConstraints(Fl_Widget* o, void* v)
+{
+	auto* ui = ((ModelerUI*)(o->user_data()));
+	auto* check_box = (Fl_Check_Button*)o;
+	IKSolver::getInstance().enable_constraints = check_box->value();
+}
+
+void ModelerUI::cb_enableYaw(Fl_Widget* o, void* v)
+{
+	auto* ui = ((ModelerUI*)(o->user_data()));
+	auto* check_box = (Fl_Check_Button*)o;
+	auto& constraint = IKSolver::getInstance().constraints[ui->jointChoice];
+	constraint.enable_yaw = check_box->value();
+}
+
+void ModelerUI::cb_enablePitch(Fl_Widget* o, void* v)
+{
+	auto* ui = ((ModelerUI*)(o->user_data()));
+	auto* check_box = (Fl_Check_Button*)o;
+	auto& constraint = IKSolver::getInstance().constraints[ui->jointChoice];
+	constraint.enable_pitch = check_box->value();
+}
+
+void ModelerUI::cb_enableRoll(Fl_Widget* o, void* v)
+{
+	auto* ui = ((ModelerUI*)(o->user_data()));
+	auto* check_box = (Fl_Check_Button*)o;
+	auto& constraint = IKSolver::getInstance().constraints[ui->jointChoice];
+	constraint.enable_roll = check_box->value();
+}
+
+void ModelerUI::cb_showIkDialog(Fl_Menu_* o, void*)
+{
+	((ModelerUI*)(o->parent()->user_data()))->m_ikDialog->show();
 }

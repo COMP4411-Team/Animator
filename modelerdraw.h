@@ -37,6 +37,8 @@ public:
 	GLfloat m_specularColor[4];
 	GLfloat m_shininess;
 
+	bool enableCelShading{false};
+
 private:
 	ModelerDrawState();
 	ModelerDrawState(const ModelerDrawState &) {}
@@ -123,6 +125,8 @@ void drawRotation(double x1, double y1, double z1,
 	double x4, double y4, double z4);
 
 void drawSphere(float radius, const aiVector3D& position);
+
+aiVector3D celShading(const aiVector3D& normal, const aiVector3D& pos, const aiVector3D& color);
 
 
 #endif
